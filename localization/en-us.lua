@@ -31,5 +31,14 @@ return {
                 }
             }
         },
+        Other = {
+            undiscovered_stocking_present_filler = {
+				name = 'Unopened Present',
+				text = {
+					'Unwrap this gift in a',
+					'run to find out what it does'
+				}
+			},
+        }
     }
 }

@@ -174,9 +174,12 @@ G.playing_cards = {}
 set_screen_positions()
 '''
 payload = '''
- for _, mod in ipairs(SMODS.mod_list) do
-    if mod.can_load and mod.custom_card_areas and type(mod.custom_card_areas) == "function" then
-        mod.custom_card_areas(self)
+if V(SMODS.version) < V('1.0.0~BETA-1117b') then
+    print('old compat')
+    for _, mod in ipairs(SMODS.mod_list) do
+        if mod.can_load and mod.custom_card_areas and type(mod.custom_card_areas) == "function" then
+            mod.custom_card_areas(self)
+        end
     end
 end
 '''

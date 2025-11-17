@@ -1,7 +1,17 @@
 StockingStuffer = SMODS.current_mod
 SMODS.handle_loc_file(SMODS.current_mod.path, SMODS.current_mod.id)
 
+StockingStuffer.Developers = {}
+StockingStuffer.Developer = Object:extend()
+function StockingStuffer.Developer:init(name, colour)
+    self.name = name
+    self.colour = colour
+
+    StockingStuffer.Developers[name] = self
+end
+
 StockingStuffer.Present = SMODS.Consumable:extend()
+StockingStuffer.PresentFiller = SMODS.Consumable:extend()
 StockingStuffer.states = {
     slot_visible = 1
 }
@@ -9,18 +19,15 @@ StockingStuffer.states = {
 -- This table contains values that all presents should have. They can be overriden for custom behaviours if necessary.
 local PresentDefaults = {
     required_params = {
-        'set',
         'key',
-        'developer',
-        'dev_colour',
-        -- 'present_keys' NOT FUNCTIONAL
+        'developer'
     },
     set = 'stocking_present',
     atlas = 'stocking_presents',
     discovered = true,
     pos = { x = 0, y = 0 },
     loc_vars = function(self, info_queue, card)
-        return { vars = { colours = { self.dev_colour } } }
+        return { vars = { colours = { StockingStuffer.Developers[self.developer].colour } } }
     end,
     process_loc_text = function(self)
         SMODS.process_loc_text(G.localization.descriptions[self.set], self.key,
@@ -32,21 +39,18 @@ local PresentDefaults = {
     end,
     use = function(self, card, area, copier)
         local gift = nil
-        card.dissolve_colours = { self.dev_colour, darken(self.dev_colour, 0.5), lighten(self.dev_colour, 0.5), darken(
-        G.C.RED, 0.2), G.C.GREEN }
+        card.dissolve_colours = { StockingStuffer.Developers[self.developer].colour,
+            darken(StockingStuffer.Developers[self.developer].colour, 0.5), lighten(StockingStuffer.Developers[self.developer].colour, 0.5),
+            darken(G.C.RED, 0.2), G.C.GREEN
+        }
         G.E_MANAGER:add_event(Event({
             trigger = 'immediate',
             blocking = true,
             func = function()
                 card.children.particles = Particles(1, 1, 0, 0, {
-                    timer = 0.01,
-                    scale = 0.2,
-                    initialize = true,
-                    speed = 3,
-                    padding = 1,
-                    attach = card,
-                    fill = true,
-                    colours = card.dissolve_colours,
+                    timer = 0.01, scale = 0.2, initialize = true,
+                    speed = 3, padding = 1, attach = card,
+                    fill = true, colours = card.dissolve_colours,
                 })
                 card.children.particles.fade_alpha = 1
                 card.children.particles:fade(1, 0)
@@ -61,25 +65,22 @@ local PresentDefaults = {
             func = function()
                 G.gift.T.y = card.T.y
                 G.E_MANAGER:add_event(Event({
-                    trigger = 'after',
-                    delay = 0.2,
+                    trigger = 'after', delay = 0.2,
                     func = function()
-                        -- TODO: Chooses from self.present_keys
-                        gift = SMODS.add_card({ area = G.gift, set = 'Tarot' })
+                        local pool = get_current_pool('stocking_present_filler')
+                        local key = pseudorandom_element(pool, 'stocking_present_open', {in_pool = function(v, args) return G.P_CENTERS[v].developer == self.developer end})
+                        gift = SMODS.add_card({ area = G.gift, set = 'stocking_present_filler', key = key })
                         return true
                     end
                 }))
                 G.E_MANAGER:add_event(Event({
-                    trigger = 'ease',
-                    delay = 1,
-                    ref_table = G.gift.T,
-                    ref_value = 'y',
+                    trigger = 'ease', delay = 1,
+                    ref_table = G.gift.T, ref_value = 'y',
                     ease_to = G.play.T.y,
                     func = (function(t) return t end)
                 }))
                 G.E_MANAGER:add_event(Event({
-                    trigger = 'after',
-                    delay = 1.5,
+                    trigger = 'after', delay = 1.5,
                     func = function()
                         card.children.particles:remove()
                         card.children.particles = nil
@@ -101,6 +102,20 @@ local PresentDefaults = {
 
 for k, v in pairs(PresentDefaults) do
     StockingStuffer.Present[k] = v
+end
+
+local PresentFillerDefaults = {
+    required_params = {
+        'atlas',
+        'key',
+        'developer',
+    },
+    set = 'stocking_present_filler',
+    discovered = false,
+}
+
+for k, v in pairs(PresentFillerDefaults) do
+    StockingStuffer.PresentFiller[k] = v
 end
 
 -- Default Atlas for presents without an atlas provided
@@ -134,8 +149,17 @@ SMODS.ConsumableType({
     primary_colour = HEX("22A617"),
     secondary_colour = HEX("22A617"),
     collection_rows = { 6, 6 },
-    shop_rate = 2,
+    shop_rate = 0,
     default = 'c_stocking_test_1'
+})
+
+SMODS.ConsumableType({
+    key = 'stocking_present_filler',
+    primary_colour = HEX("22A617"),
+    secondary_colour = HEX("22A617"),
+    -- no_collection = true,
+    collection_rows = {5, 5, 5},
+    shop_rate = 0,
 })
 
 SMODS.Booster({
@@ -150,6 +174,7 @@ SMODS.Booster({
     create_card = function(self, card, i)
         return create_card('stocking_present', G.pack_cards, nil, nil, true, true, nil, "stocking_present")
     end,
+    in_pool = function() return false end
 })
 
 -- TODO: Remove when finished
@@ -159,6 +184,9 @@ local devs = {
     { name = 'Santa Claus', colour = G.C.GREEN },
 }
 
+for _, v in ipairs(devs) do
+    StockingStuffer.Developer(v.name, v.colour)
+end
 
 -- TODO: Remove when finished
 for i = 1, 12 do
@@ -166,15 +194,39 @@ for i = 1, 12 do
         key = 'test' .. i,
         pos = { x = i % 3, y = 0 },
         developer = devs[i % #devs + 1].name,
-        dev_colour = devs[i % #devs + 1].colour
     })
+    for j=1, 5 do
+        StockingStuffer.PresentFiller({
+            atlas = 'sack',
+            key = 'filler_'..devs[i % #devs + 1].name..'-'..i..j,
+            developer = devs[i % #devs + 1].name,
+            loc_txt = {
+                name = 'Example Present',
+                text = {
+                    'Does nothing'
+                }
+            },
+            can_use = function()
+                return true
+            end,
+            use = function(self, card)
+                print('Test use')
+            end,
+            calculate = function(self, card, context)
+                if context.joker_main then
+                    return {mult = 2}
+                end
+            end
+        })
+    end
 end
 
 local stocking_stuffer_card_popup = G.UIDEF.card_h_popup
 function G.UIDEF.card_h_popup(card)
     local ret_val = stocking_stuffer_card_popup(card)
     local obj = card.config.center
-    if obj and obj.discovered and obj.set and obj.set == 'stocking_present' then
+    if obj and obj.set and (obj.set == 'stocking_present' or obj.set == 'stocking_present_filler') then
+        ret_val.nodes[1].nodes[1].nodes[1].config.colour = G.C.L_BLACK
         local tag = {
             n = G.UIT.R,
             config = { align = 'tm' },
@@ -184,8 +236,8 @@ function G.UIDEF.card_h_popup(card)
                     n = G.UIT.O,
                     config = {
                         object = DynaText({
-                            string = obj.developer,
-                            colours = { obj.dev_colour or G.C.UI.BACKGROUND_WHITE },
+                            string = StockingStuffer.Developers[obj.developer].name,
+                            colours = { StockingStuffer.Developers[obj.developer].colour or G.C.UI.BACKGROUND_WHITE },
                             bump = true,
                             silent = true,
                             pop_in = 0,
@@ -349,8 +401,7 @@ end
 
 local end_consum = G.FUNCS.end_consumeable
 function G.FUNCS.end_consumeable(e)
-    end_consum(e)
-    if G.booster_pack then
+    if booster_obj and booster_obj.key == 'p_stocking_present_select' then 
         G.E_MANAGER:add_event(Event({
             trigger = 'immediate',
             func = function()                
@@ -360,6 +411,7 @@ function G.FUNCS.end_consumeable(e)
             end
         }))
     end
+    end_consum(e)
 end
 
 -- Removes skip button from present selection
@@ -381,7 +433,7 @@ function G.UIDEF.use_and_sell_buttons(card)
         {n=G.UIT.ROOT, config = {padding = 0, colour = G.C.CLEAR}, nodes={
                 {n=G.UIT.R, config={mid = true}, nodes={
             }},
-            {n=G.UIT.R, config={ref_table = card, r = 0.08, padding = 0.1, align = "bm", minw = 0.5*card.T.w - 0.15, minh = 0.65*card.T.h, maxw = 0.7*card.T.w - 0.15, hover = true, shadow = true, colour = card.config.center.dev_colour, one_press = true, button = 'use_card'}, nodes={
+            {n=G.UIT.R, config={ref_table = card, r = 0.08, padding = 0.1, align = "bm", minw = 0.5*card.T.w - 0.15, minh = 0.65*card.T.h, maxw = 0.7*card.T.w - 0.15, hover = true, shadow = true, colour = StockingStuffer.Developers[card.config.center.developer].colour, one_press = true, button = 'use_card'}, nodes={
                 {n=G.UIT.T, config={text = localize('b_open'),colour = G.C.UI.TEXT_LIGHT, scale = 0.35, shadow = true}}
             }},
             {n=G.UIT.R, config = {minh = 0.1*card.T.h}}
@@ -390,23 +442,7 @@ function G.UIDEF.use_and_sell_buttons(card)
     return buttons(card)
 end
 
-
-local can_use = G.FUNCS.can_use_consumeable
-G.FUNCS.can_use_consumeable = function(e)
-    can_use(e)
-    if e.config.ref_table.ability.set == 'stocking_present' then
-        e.config.colour = G.C.BLUE
-        e.children[1].config.text = localize('b_select')
-        if e.children[1].config.scale ~=  0.35 then
-            e.children[1].config.scale = 0.35
-            e.UIBox:recalculate()
-        end
-    end
-end
-
 -- TODO: Calculation of stocking_present area animation switching needs delay
-
--- TODO: ConsumableType for presents (hidden from collection)
 
 -- TODO: Tidy code
 
