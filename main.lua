@@ -274,7 +274,7 @@ StockingStuffer.custom_card_areas = function(game)
     }
     
     StockingStuffer.states.slot_visible = 1
-    StockingStuffer.animate_areas()
+    -- StockingStuffer.animate_areas()
 end
 
 G.FUNCS.toggle_jokers_presents = function(e)
