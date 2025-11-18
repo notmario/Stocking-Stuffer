@@ -33,6 +33,16 @@ return {
                 }
             }
         },
+        stocking_present_filler = {
+            default_text = {
+                name = 'Placeholder',
+                text = {
+                    '{C:red}#1#',
+                    'Use {C:red}key{} above in',
+                    'loc file :)'
+                }
+            }
+        },
         Other = {
             undiscovered_stocking_present_filler = {
 				name = 'Unopened Present',

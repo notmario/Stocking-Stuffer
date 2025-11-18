@@ -149,6 +149,14 @@ local PresentFillerDefaults = {
                 obj.atlas = obj.atlas or 'stocking_'..StockingStuffer.Developers[obj.developer].name..'_presents'
             end
         end
+    end,
+    process_loc_text = function(self)
+        SMODS.process_loc_text(G.localization.descriptions[self.set], self.key,
+            G.localization.descriptions.stocking_present_filler[self.key] or
+            G.localization.descriptions.stocking_present_filler.default_text)
+    end,
+    loc_vars = function(self, info_queue, card)
+        return {vars = {self.key}}
     end
 }
 
