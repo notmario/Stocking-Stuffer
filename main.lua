@@ -178,50 +178,6 @@ SMODS.Booster({
     in_pool = function() return false end
 })
 
--- TODO: Remove when finished
-local devs = {
-    { name = 'eremel_',     colour = G.C.RED },
-    { name = 'theAstra',    colour = G.C.BLUE },
-    { name = 'Santa Claus', colour = G.C.GREEN },
-}
-
-for _, v in ipairs(devs) do
-    StockingStuffer.Developer(v.name, v.colour)
-end
-
--- TODO: Remove when finished
-for i = 1, 12 do
-    StockingStuffer.Present({
-        key = 'test' .. i,
-        pos = { x = i % 3, y = 0 },
-        developer = devs[i % #devs + 1].name,
-    })
-    for j=1, 5 do
-        StockingStuffer.PresentFiller({
-            atlas = 'sack',
-            key = 'filler_'..devs[i % #devs + 1].name..'-'..i..j,
-            developer = devs[i % #devs + 1].name,
-            loc_txt = {
-                name = 'Example Present',
-                text = {
-                    'Does nothing'
-                }
-            },
-            can_use = function()
-                return true
-            end,
-            use = function(self, card)
-                print('Test use')
-            end,
-            calculate = function(self, card, context)
-                if context.joker_main then
-                    return {mult = 2}
-                end
-            end
-        })
-    end
-end
-
 local stocking_stuffer_card_popup = G.UIDEF.card_h_popup
 function G.UIDEF.card_h_popup(card)
     local ret_val = stocking_stuffer_card_popup(card)
@@ -468,4 +424,59 @@ end
 
 -- TODO: Tidy code
 
--- TODO: Template file
+
+--#region File Loading (Totally stolen from Hot Potato)
+local nativefs = NFS
+
+local path_len = string.len(SMODS.current_mod.path) + 1
+
+local function load_file_native(path)
+	if not path or path == "" then
+		error("No path was provided to load.")
+	end
+	local file_path = path
+	local file_content, err = NFS.read(file_path)
+	if not file_content then
+		return nil,
+			"Error reading file '" .. path .. "' for mod with ID '" .. SMODS.current_mod.id .. "': " .. err
+	end
+	local short_path = string.sub(path, path_len, path:len())
+	local chunk, err = load(file_content, "=[SMODS " .. SMODS.current_mod.id .. ' "' .. short_path .. '"]')
+	if not chunk then
+		return nil,
+			"Error processing file '" .. path .. "' for mod with ID '" .. SMODS.current_mod.id .. "': " .. err
+	end
+	return chunk
+end
+local blacklist = {
+	assets = true,
+	lovely = true,
+	[".github"] = true,
+	[".git"] = true,
+	["localization"] = true,
+    [".vscode"] = true
+}
+local function load_files(path, dirs_only)
+	local info = nativefs.getDirectoryItemsInfo(path)
+	table.sort(info, function(a, b)
+		return a.name < b.name
+	end)
+	for _, v in ipairs(info) do
+		if v.type == "directory" and not blacklist[v.name] then
+			load_files(path .. "/" .. v.name)
+		elseif not dirs_only then
+			if string.find(v.name, ".lua") and v.name ~= 'template.lua' then -- no X.lua.txt files or whatever unless they are also lua files
+				local f, err = load_file_native(path .. "/" .. v.name)
+				if f then
+					f()
+				else
+					error("error in file " .. v.name .. ": " .. err)
+				end
+			end
+		end
+	end
+end
+local path = SMODS.current_mod.path
+load_files(path, true)
+
+--#endregion
