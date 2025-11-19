@@ -537,34 +537,25 @@ local function load_file_native(path)
 	return chunk
 end
 local blacklist = {
-	assets = true,
-	lovely = true,
-	[".github"] = true,
-	[".git"] = true,
-	["localization"] = true,
-    [".vscode"] = true,
+    ["template.lua"] = true,
 }
-local function load_files(path, dirs_only)
+local function load_files(path)
 	local info = nativefs.getDirectoryItemsInfo(path)
 	table.sort(info, function(a, b)
 		return a.name < b.name
 	end)
 	for _, v in ipairs(info) do
-		if v.type == "directory" and not blacklist[v.name] then
-			load_files(path .. "/" .. v.name)
-		elseif not dirs_only then
-			if string.find(v.name, ".lua") and v.name ~= 'template.lua' then -- no X.lua.txt files or whatever unless they are also lua files
-				local f, err = load_file_native(path .. "/" .. v.name)
-				if f then
-					f()
-				else
-					error("error in file " .. v.name .. ": " .. err)
-				end
+		if string.find(v.name, ".lua") and not blacklist[v.name] then -- no X.lua.txt files or whatever unless they are also lua files
+			local f, err = load_file_native(path .. "/" .. v.name)
+			if f then
+				f()
+			else
+				error("error in file " .. v.name .. ": " .. err)
 			end
 		end
 	end
 end
-local path = SMODS.current_mod.path
-load_files(path, true)
+local path = SMODS.current_mod.path .. '/content'
+load_files(path)
 
 --#endregion
