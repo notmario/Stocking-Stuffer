@@ -451,7 +451,7 @@ function G.UIDEF.card_h_popup(card)
     if card.config and card.config.center and card.config.center.key == 'j_stocking_dummy' then return end
     local ret_val = stocking_stuffer_card_popup(card)
     local obj = card.config.center
-    if obj and obj.set and (obj.set == 'stocking_present' or obj.set == 'stocking_wrapped_present') and obj.discovered then
+    if obj and obj.set and (obj.set == 'stocking_present' or obj.set == 'stocking_wrapped_present') then
         ret_val.nodes[1].nodes[1].nodes[1].config.colour = G.C.L_BLACK
         local tag = {
             n = G.UIT.R,
