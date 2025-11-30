@@ -1,5 +1,7 @@
 StockingStuffer = SMODS.current_mod
 SMODS.handle_loc_file(SMODS.current_mod.path, SMODS.current_mod.id)
+assert(SMODS.load_file('PotatoPatchUtils/info_menu.lua'))()
+PotatoPatchUtils.LOC.init()
 
 -- State for Present Area visibility
 StockingStuffer.states = {
@@ -315,6 +317,10 @@ end
 
 -- Area toggle button func
 G.FUNCS.toggle_jokers_presents = function(e)
+    if not G.PROFILES[G.SETTINGS.profile].stocking_stuffer_completed then
+        G.PROFILES[G.SETTINGS.profile].stocking_stuffer_completed = true
+        PotatoPatchUtils.INFO_MENU.create_menu{menu_type = 'stocking_stuffer', outline_colour = G.C.RED, colour = G.C.GREEN, page_colour = G.C.GREEN, no_first_time = true}
+    end
     StockingStuffer.states.slot_visible = StockingStuffer.states.slot_visible * -1
     play_sound('paper1')
     StockingStuffer.animate_areas()
@@ -496,13 +502,17 @@ end
 -- Gives player a Sack of Presents on shop enter when tracking var condition is met
 local update_shopref = Game.update_shop
 function Game.update_shop(self, dt)
-    update_shopref(self, dt)
     if not G.GAME.stocking_last_pack or G.GAME.round_resets.ante <= G.GAME.stocking_last_pack then return end
     G.GAME.stocking_last_pack = G.GAME.round_resets.ante
+    if not G.PROFILES[G.SETTINGS.profile].stocking_stuffer_completed then
+        G.PROFILES[G.SETTINGS.profile].stocking_stuffer_completed = true
+        PotatoPatchUtils.INFO_MENU.create_menu{menu_type = 'stocking_stuffer', outline_colour = G.C.RED, colour = G.C.GREEN, page_colour = G.C.GREEN, no_first_time = true}
+    end
+    update_shopref(self, dt)
     G.E_MANAGER:add_event(Event({
         trigger = 'after',
         func = function()
-            if G.STATE_COMPLETE then
+            if G.STATE_COMPLETE and not G.OVERLAY_MENU then
                 local card = SMODS.add_card({area = G.play, key = 'p_stocking_present_select', skip_materialize = true})
                 G.FUNCS.use_card({ config = { ref_table = card } })
                 ease_value(G.HUD.alignment.offset, 'x', -7, nil, nil, nil, 1, 'elastic')
