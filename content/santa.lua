@@ -91,7 +91,7 @@ StockingStuffer.Present({
 
     -- Adjusts the hitbox on the item
     pixel_size = { w = 62, h = 74 },
-
+    disable_use_animation = true,
     use = function(self, card)
         card.ability.extra.ready = false
         SMODS.change_free_rerolls(1)

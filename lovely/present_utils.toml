@@ -231,3 +231,50 @@ local char = line:sub(i,i)
 payload = '''
 if _c and char == '}' then _c_val = _c_val or true end
 '''
+
+# Enable disable_use_animation functionality
+[[patches]]
+[patches.pattern]
+target = 'functions/button_callbacks.lua'
+match_indent = true
+position = 'before'
+pattern = '''
+    if G.booster_pack and not G.booster_pack.alignment.offset.py and ((not select_to and card.ability.consumeable) or not (G.GAME.pack_choices and G.GAME.pack_choices > 1)) then
+'''
+payload = '''
+if not card.config.center.disable_use_animation then
+'''
+[[patches]]
+[patches.pattern]
+target = 'functions/button_callbacks.lua'
+match_indent = true
+position = 'before'
+pattern = '''
+if card.children.use_button then card.children.use_button:remove(); card.children.use_button = nil end
+'''
+payload = '''
+end
+'''
+[[patches]]
+[patches.pattern]
+target = 'functions/button_callbacks.lua'
+match_indent = true
+position = 'before'
+pattern = '''
+    if G.shop then 
+        G.shop.alignment.offset.y = G.shop.alignment.offset.py
+'''
+payload = '''
+if not card.config.center.disable_use_animation then
+'''
+[[patches]]
+[patches.pattern]
+target = 'functions/button_callbacks.lua'
+match_indent = true
+position = 'before'
+pattern = '''
+if nc and not area then G.consumeables:emplace(card) end
+'''
+payload = '''
+end
+'''
