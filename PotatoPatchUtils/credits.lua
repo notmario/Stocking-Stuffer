@@ -10,8 +10,8 @@ PotatoPatchUtils.CREDITS.generate_string = function(developers, prefix)
         local target_row = math.ceil(i/3)
         if target_row > #credit_string.nodes then table.insert(credit_string.nodes, {n=G.UIT.R, config={align='cm'}, nodes ={}}) end
         table.insert(credit_string.nodes[target_row].nodes, {n=G.UIT.O, config = {object = DynaText({
-                    string = PotatoPatchUtils.Developers[name].name,
-                    colours = { PotatoPatchUtils.Developers[name].colour or G.C.UI.BACKGROUND_WHITE }, scale = 0.27,
+                    string = PotatoPatchUtils.Developers[name] and PotatoPatchUtils.Developers[name].name or name,
+                    colours = { PotatoPatchUtils.Developers[name] and PotatoPatchUtils.Developers[name].colour or G.C.UI.BACKGROUND_WHITE }, scale = 0.27,
                     silent = true, shadow = true, y_offset = -0.6, 
                 })
             }
