@@ -8,7 +8,7 @@ PotatoPatchUtils.CREDITS.generate_string = function(developers, prefix)
 
     for i, name in ipairs(developers) do
         local target_row = math.ceil(i/3)
-        local dev = PotatoPatchUtils.Developers[name]
+        local dev = PotatoPatchUtils.Developers[name] or {}
         if target_row > #credit_string.nodes then table.insert(credit_string.nodes, {n=G.UIT.R, config={align='cm'}, nodes ={}}) end
         table.insert(credit_string.nodes[target_row].nodes, {n=G.UIT.O, config = {object = DynaText({
                     string = dev.loc and localize(dev.loc) or dev.name or name,
