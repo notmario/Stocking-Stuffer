@@ -327,7 +327,7 @@ function Card:add_to_deck(from_debuff)
 	if self.ability.consumeable and self.ability.set ~= "stocking_present" then
 		t = G.GAME.haya_stocking_stuffer.consumables_added
 	end
-	t[self.sort_id] = true
+	if self.sort_id then t[self.sort_id] = true end
 	return atd(self, from_debuff)
 end
 
@@ -342,7 +342,7 @@ function Card:remove_from_deck(from_debuff)
 	if self.ability.consumeable and self.ability.set ~= "stocking_present" then
 		t = G.GAME.haya_stocking_stuffer.consumables_added
 	end
-	t[self.sort_id] = nil
+	if self.sort_id then t[self.sort_id] = nil end
 	return rfd(self, from_debuff)
 end
 
