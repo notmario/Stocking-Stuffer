@@ -270,6 +270,7 @@ end
         group_key = 'stocking_stuffer_under_the_tree',
         atlas = 'sack',
         config = { choose = 1, extra = 3 },
+        display_size = {w = 71 *  2.5, h = 95 * 2.5},
         ease_background_colour = function(self)
             ease_colour(G.C.DYN_UI.MAIN, G.C.GREEN)
             ease_background_colour { new_colour = G.C.RED, special_colour = G.C.GREEN, contrast = 2 }
@@ -643,9 +644,10 @@ end
 -- Dissolves presents instead of exploding on use
 local explode = Card.explode
 function Card:explode(colours, time)
-    if self.config.center_key == 'p_stocking_present_select' then 
+    if self.config.center_key == 'p_stocking_present_select' then
+        self:juice_up()
         G.E_MANAGER:add_event(Event({
-            trigger = 'after', delay = 1,
+            trigger = 'after', delay = 1.8,
             func = function()                
                 self:start_dissolve()
                 return true
