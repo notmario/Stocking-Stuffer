@@ -31,7 +31,13 @@ return {
                     '{s:0.5}From {V:1,s:0.5}#1#'
                 }
             },
-                
+            default_text = {
+                name = '{V:1}Present',
+                text = {
+                    '  {C:inactive}What could be inside?  ',
+                    '{C:inactive}Open me to find out!'
+                }
+            },
             theAstra_stocking_present = {
                 name = '{V:1}Gift!',
                 text = {
@@ -52,19 +58,19 @@ return {
         },
         Other = {
             undiscovered_stocking_wrapped_present = {
-				name = 'Unopened Present',
-				text = {
-					'Unwrap this gift in a',
-					'run to find out what it does'
-				}
-			},
+                name = 'Unopened Present',
+                text = {
+                    'Unwrap this gift in a',
+                    'run to find out what it does'
+                }
+            },
             undiscovered_stocking_present = {
-				name = 'Undiscovered Present',
-				text = {
-					'Find this Present in a',
-					'run to find out what it does'
-				}
-			},
+                name = 'Undiscovered Present',
+                text = {
+                    'Find this Present in a',
+                    'run to find out what it does'
+                }
+            },
             stocking_stuffer_tutorial_text = {
                 text = {
                     'Presents {C:gold}that{} you {C:green}unwrap',
@@ -88,7 +94,7 @@ return {
                                 "lovingly wrapped and prepared by your favourite community members!"
                             },
                             {
-                                "You can visit the {C:green}Christmas Tree{} to choose a present", 
+                                "You can visit the {C:green}Christmas Tree{} to choose a present",
                                 "every time you defeat a {C:attention}Boss Blind{}."
                             },
                             {
