@@ -30,11 +30,6 @@ StockingStuffer.Developer({
     colour = HEX('7BF2FF')
 })
 
-StockingStuffer.Developer({
-    name = 'Eremel',
-    colour = HEX('F48CBA')
-})
-
 
 -- Wrapped Present Template
 -- key defaults to 'display_name_stocking_present'
