@@ -531,6 +531,11 @@ function create_tree_hud()
     }}
 end
 
+G.FUNCS.stocking_stuffer_help = function()
+    local sprite = SMODS.create_sprite(0,0, 3*(231/117), 3, 'stocking_logo', {x=0,y=0})
+    PotatoPatchUtils.INFO_MENU.create_menu{menu_type = 'stocking_stuffer', outline_colour = G.C.RED, image = sprite, colour = G.C.GREEN, page_colour = G.C.GREEN, no_first_time = true, back_func = 'your_collection_stocking_presents'}
+end
+
 --#endregion
 
 --#region Overrides
@@ -753,6 +758,21 @@ function Card:hover()
     end
 end
 
+local SS_eval_card = eval_card
+function eval_card(card, context)
+    if card.area == G.stocking_flipper then
+        if StockingStuffer.first_calculation then
+            StockingStuffer.first_calculation = nil
+            StockingStuffer.second_calculation = true
+        else
+            StockingStuffer.first_calculation = true
+            StockingStuffer.second_calculation = nil
+        end
+        return {}, {}
+    end
+    return SS_eval_card(card, context)
+end
+
 --#endregion
 
 --#region File Loading (Totally stolen from Hot Potato)
@@ -877,22 +897,3 @@ end
 
 --#endregion
 
-local SS_eval_card = eval_card
-function eval_card(card, context)
-    if card.area == G.stocking_flipper then
-        if StockingStuffer.first_calculation then
-            StockingStuffer.first_calculation = nil
-            StockingStuffer.second_calculation = true
-        else
-            StockingStuffer.first_calculation = true
-            StockingStuffer.second_calculation = nil
-        end
-        return {}, {}
-    end
-    return SS_eval_card(card, context)
-end
-
-G.FUNCS.stocking_stuffer_help = function()
-    local sprite = SMODS.create_sprite(0,0, 3*(231/117), 3, 'stocking_logo', {x=0,y=0})
-    PotatoPatchUtils.INFO_MENU.create_menu{menu_type = 'stocking_stuffer', outline_colour = G.C.RED, image = sprite, colour = G.C.GREEN, page_colour = G.C.GREEN, no_first_time = true, back_func = 'your_collection_stocking_presents'}
-end
