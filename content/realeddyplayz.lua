@@ -223,7 +223,7 @@ StockingStuffer.Present({
     end,
 
     can_use = function(self, card)
-        return card.ability.extra.state == 1;
+        return card.ability.extra.state == 1 and #G.consumeables.cards < G.consumeables.config.card_limit;
     end,
 })
 
