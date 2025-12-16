@@ -97,7 +97,8 @@ StockingStuffer.Present({
         info_queue[#info_queue + 1] = G.P_CENTERS.j_joker
     end,
     calculate = function(self, card, context)
-        if StockingStuffer.first_calculation and context.before then
+        if StockingStuffer.first_calculation and context.before and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit then
+            G.GAME.joker_buffer = G.GAME.joker_buffer + 1
             local notgift = nil
             G.E_MANAGER:add_event(Event({
                 trigger = 'immediate',
@@ -114,7 +115,8 @@ StockingStuffer.Present({
                     G.E_MANAGER:add_event(Event({
                         trigger = 'immediate',
                         func = function()
-                            draw_card(G.gift, G.stocking_present, nil, 'up', nil, notgift)
+                            draw_card(G.gift, G.jokers, nil, 'up', nil, notgift)
+                            G.GAME.joker_buffer = 0
                             return true
                         end
                     }))
