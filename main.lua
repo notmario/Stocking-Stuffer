@@ -366,6 +366,8 @@ end
         ease_background_colour = function(self)
             ease_colour(G.C.DYN_UI.MAIN, G.C.GREEN)
             ease_background_colour { new_colour = G.C.RED, special_colour = G.C.GREEN, contrast = 2 }
+            ease_value(G.HUD.alignment.offset, 'x', -7, nil, nil, nil, 1, 'elastic')
+            ease_value(G.christmas_tree.alignment.offset, 'x', 12, nil, nil, nil, 1, 'elastic')
         end,
         draw_hand = false,
         create_card = function(self, card, i)
@@ -673,12 +675,6 @@ Game.init_game_object = function(self)
     return ret
 end
 
-SMODS.Atlas({
-    key = 'logo',
-    path = 'logo.png',
-    px = 231, py = 117
-})
-
 -- Gives player a Sack of Presents on shop enter when tracking var condition is met
 local update_shopref = Game.update_shop
 function Game.update_shop(self, dt)
@@ -697,8 +693,6 @@ function Game.update_shop(self, dt)
                 local card = SMODS.add_card({area = G.play, key = 'p_stocking_present_select', skip_materialize = true})
                 card.cost = 0
                 G.FUNCS.use_card({ config = { ref_table = card } })
-                ease_value(G.HUD.alignment.offset, 'x', -7, nil, nil, nil, 1, 'elastic')
-                ease_value(G.christmas_tree.alignment.offset, 'x', 12, nil, nil, nil, 1, 'elastic')
                 return true
             end
         end
