@@ -6,7 +6,8 @@ PotatoPatchUtils.LOC.init()
 
 -- State for Present Area visibility
 StockingStuffer.states = {
-    slot_visible = 1
+    slot_visible = 1,
+    areas_moving = false
 }
 
 -- Global var to track when presents are being scored
@@ -477,7 +478,7 @@ G.FUNCS.toggle_jokers_presents = function(e)
 end
 
 G.FUNCS.can_toggle_presents = function(e)
-    if G.STATE ~= G.STATES.HAND_PLAYED and G.STATE ~= G.STATES.DRAW_TO_HAND and G.STATE ~= G.STATES.PLAY_TAROT then
+    if G.STATE ~= G.STATES.HAND_PLAYED and G.STATE ~= G.STATES.DRAW_TO_HAND and G.STATE ~= G.STATES.PLAY_TAROT and not StockingStuffer.states.areas_moving then
         e.config.colour = G.C.RED
         e.config.button = 'toggle_jokers_presents'
     else
@@ -488,6 +489,7 @@ end
 
 -- Area toggle helpers
 function StockingStuffer.animate_areas()
+    StockingStuffer.states.areas_moving = true
     if StockingStuffer.states.slot_visible == -1 then
         ease_alignment('jokers', -4, true)
         ease_alignment('stocking_present', 0)
@@ -495,6 +497,12 @@ function StockingStuffer.animate_areas()
         ease_alignment('stocking_present', -4, true)
         ease_alignment('jokers', 0)
     end
+    G.E_MANAGER:add_event(Event({
+        func = function()
+            StockingStuffer.states.areas_moving = false
+            return true;
+        end
+    }))
 end
 
 -- Joker/Present Area Easing
