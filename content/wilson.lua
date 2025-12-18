@@ -163,7 +163,13 @@ StockingStuffer.Present({
 })
 
 local function phoneRandom(card)
-    card.ability.extra.state = pseudorandom('stocking_wilson_phone', 0, 5)
+    local new_state = pseudorandom('stocking_wilson_phone', 0, 4)
+
+    if new_state >= card.ability.extra.state then
+        new_state = new_state + 1
+    end
+
+    card.ability.extra.state = new_state
 end
 
 StockingStuffer.Present({
