@@ -34,8 +34,8 @@ return {
             ["Youh Kirisame_stocking_controller"] = {
                 name = 'Game Controller',
                 text = {
-                    {"{X:mult,C:white}X#1#{} mult for every {V:1}#2#{} card",
-                    "in scoring hand",
+                    {"{X:mult,C:white}X#1#{} Mult for",
+                    "every {V:1}#2#{} card in scoring hand",
                     "{s:0.8,C:inactive}Suit changes at end of round{}",
                     "{stocking}after{}"
                     }
@@ -45,7 +45,7 @@ return {
                 name = 'Candy Cane Revolver',
                 text = {
                     {"Destroys all {C:attention}#2#s{} in scoring hand,",
-                    "cools off for #1# {C:attention}round{} after use",
+                    "cools off for {C:attention}#1#{} round after use",
                     "{stocking}before{}"},
                     {"Use to unload the weapon.", "{stocking}usable{}"}
                 }
@@ -54,7 +54,7 @@ return {
                 name = 'Candy Cane Revolver',
                 text = {
                     {"The weapon is unloaded",
-                    "{s:0.8,C:inactive}(does nothing){}"
+                    "{s:0.8,C:inactive}(Does nothing){}"
                     },
                     {"Use to load the weapon.", "{stocking}usable{}"}
                 }
