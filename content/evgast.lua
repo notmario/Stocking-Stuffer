@@ -352,7 +352,7 @@ StockingStuffer.Present({
 local chest_area_take = Card.highlight
 function Card:highlight(is_highlighted)
     chest_area_take(self, is_highlighted)
-    if self.highlighted and self.area == chest_area_check then
+    if self.highlighted and self.area and self.area == chest_area_check then
         self.children.use_button = UIBox({
             definition = take,
             config = {
@@ -362,7 +362,7 @@ function Card:highlight(is_highlighted)
                 colour = G.C.CLEAR
             }
         })
-    elseif self.children.use_button and self.highlighted and self.area == chest_area_check then
+    elseif self.children.use_button and self.highlighted and self.area and self.area == chest_area_check then
         self.children.use_button:remove()
         self.children.use_button = nil
     end
