@@ -51,11 +51,18 @@ SMODS.Font {
 local blood_gradient = SMODS.Gradient({
     key = "blood",
     colours = {
-        HEX("c30010"),
-        HEX("ff2c2c"),
-        HEX("f69697"),
+        HEX("d2ffe0"),
+        HEX("d3faff"),
+        HEX("d9ccff"),
+        HEX("ffc4ee"),
+        HEX("ffdbbe"),
+        HEX("f5fdb7"),
+        HEX("b3fec3"),
+        HEX("b8f5ff"),
+        HEX("b9b9fe"),
+        HEX("fbbeff"),
     },
-    cycle = 5
+    cycle = 2
 })
 
 local display_name = 'Nxkoo'
@@ -76,7 +83,7 @@ StockingStuffer.Developer({
 
 StockingStuffer.WrappedPresent({
     developer = display_name, -- DO NOT CHANGE
-    artist = { "GARB" },
+    artist = { "Garb" },
     coder = { "Nxkoo" },
     pos = { x = 0, y = 0 },
 })
@@ -134,7 +141,7 @@ StockingStuffer.Present({
     pos = { x = 2, y = 0 },
     artist = { "MissingNumber" },
     coder = { "Nxkoo" },
-    blueprint_compat = false,
+    blueprint_compat = true,
     config = {},
     calculate = function(self, card, context)
         if context.joker_main and StockingStuffer.second_calculation then
@@ -193,18 +200,18 @@ StockingStuffer.Present({
     end
 })
 
-StockingStuffer.Present({                       -- QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ
-    developer = display_name,                   -- QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ
-    key = 'dealmaker',                          -- QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ
-    pos = { x = 4, y = 0 },                     -- QQQQQQQQQQQQQQQQQQQWQQQQQWWWBBBHHHHHHHHHBWWWQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ
+StockingStuffer.Present({                       -- QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ
+    developer = display_name,                   -- QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ
+    key = 'dealmaker',                          -- QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ
+    pos = { x = 4, y = 0 },                     -- QQQQQQQQQQQQQQQQQQQWQQQQQWWWBBBHHHHHHHHHBWWWQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ
     artist = { "Ruby" },                        -- QQQQQQQQQQQQQQQQD!`__ssaaaaaaaaaass_ass_s____.  -~""??9VWQQQQQQQQQQQQQQQQQQQ
     coder = { "Nxkoo" },                        -- QQQQQQQQQQQQQQP'_wmQQQWWBWV?GwwwmmWQmwwwwwgmZUVVHAqwaaaac,"?9$QQQQQQQQQQQQQQ
-    blueprint_compat = false,                   -- QQQQQQQQQQQW! aQWQQQQW?qw#TTSgwawwggywawwpY?T?TYTYTXmwwgZ$ma/-?4QQQQQQQQQQQ
+    blueprint_compat = false,                   -- QQQQQQQQQQQW! aQWQQQQW?qw#TTSgwawwggywawwpY?T?TYTYTXmwwgZ$ma/-?4QQQQQQQQQQQQ
     loc_vars = function(self, info_queue, card) -- QQQQQQQQQQQW' jQQQQWTqwDYauT9mmwwawww?WWWWQQQQQ@TT?TVTT9HQQQQQQw,-4QQQQQQQQQ
     end,                                        -- QQQQQQQQQQQ[ jQQQQQyWVw2$wWWQQQWWQWWWW7WQQQQQQQQPWWQQQWQQw7WQQQWWc)WWQQQQQQQ
     config = {},                                -- QQQQQQQQQQf jQQQQQWWmWmmQWU???????9WWQmWQQQQQQQWjWQQQQQQQWQmQQQQWL 4QQQQQQQQ
     calculate = function(self, card, context)   -- QQQQQQQQP'.yQQQQQQQQQQQP"       <wa,.!4WQQQQQQQWdWP??!"??4WWQQQWQQc ?QWQQQQQ
-    end                                         -- QQQQQP'_a.<aamQQQW!<yF "!` ..  "??$Qa "WQQQWTVP'    "??' =QQmWWV?46/ ?QQQQQ
+    end                                         -- QQQQQP'_a.<aamQQQW!<yF "!` ..  "??$Qa "WQQQWTVP'    "??' =QQmWWV?46/ ?QQQQQQ
 })                                              -- QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQWQ
 
 StockingStuffer.Present({
