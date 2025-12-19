@@ -60,7 +60,7 @@ StockingStuffer.Present({
     key = 'sticker',
     pos = { x = 1, y = 0 },
     atlas = "stocking_realeddyplayz_presents",
-    
+    blueprint_compat = true,
     -- calculate is completely optional, delete if your present does not need it
     calculate = function(self, card, context)
         -- check context and return appropriate values
@@ -114,7 +114,7 @@ StockingStuffer.Present({
     pos = { x = 2, y = 0 },
     atlas = "stocking_realeddyplayz_presents",
     config = { extra = { odds = 3 } },
-
+    blueprint_compat = true,
     calculate = function(self, card, context)
         if context.end_of_round and StockingStuffer.second_calculation and context.cardarea == G.stocking_present then
             local prob_check = SMODS.pseudorandom_probability(card, "tile", 1, card.ability.extra.odds, "tile");
@@ -238,7 +238,7 @@ StockingStuffer.Present({
     atlas = "stocking_realeddyplayz_presents",
     pos = { x = 4, y = 0 },
     config = { extra = { Xmult_min = 1.0, Xmult_max = 1.5 } },
-
+    blueprint_compat = true,
     loc_vars = function(self, info, card)
         return { 
             vars = {
@@ -288,7 +288,7 @@ StockingStuffer.Present({
     atlas = "stocking_realeddyplayz_christmas_card",
     display_size = { w = 77, h = 84 },
     pos = { x = 0, y = 0 },
-
+    blueprint_compat = false,
     config = { extra = {state = -1} },
 
     use = function(self, card)
