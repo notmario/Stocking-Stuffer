@@ -137,7 +137,7 @@ StockingStuffer.Present({
                 G.hand_text_area.game_chips:juice_up()
                 card.ability.charge = 0
                 card.ability.currentchips = 0
-                if G.GAME.blind.chips - G.GAME.chips < 0 then
+                if to_big(G.GAME.blind.chips - G.GAME.chips) < to_big(0) then
                     -- event code below referenced from Cryptid's Semicolon
                     G.E_MANAGER:add_event(
                         Event({
