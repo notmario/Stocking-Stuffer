@@ -182,7 +182,7 @@ StockingStuffer.Present({
     key = "sugar_stars",
     pos = { x = 4, y = 0 },
     can_use = function(self, card)
-        return G.GAME.blind.in_blind and G.GAME.blind.chips > 0 and G.STATE == G.STATES.SELECTING_HAND
+        return G.GAME.blind.in_blind and to_big(G.GAME.blind.chips) > to_big(0) and G.STATE == G.STATES.SELECTING_HAND
     end,
     use = function(self, card, area, copier)
         card.ability.extra.uses = card.ability.extra.uses - 1
