@@ -70,6 +70,28 @@ StockingStuffer.config_tab = function()
                 },
             },
 
+            -- Enable Jumpscare Toggle
+            {
+                n = G.UIT.R,
+                config = { align = "cm", padding = 0 },
+                nodes = {
+                    {
+                        n = G.UIT.C,
+                        config = { align = "cl", padding = 0.05 },
+                        nodes = {
+                            create_toggle { col = true, label = "", scale = 1, w = 0, shadow = true, ref_table = StockingStuffer.config, ref_value = "enable_jumpscare" },
+                        }
+                    },
+                    {
+                        n = G.UIT.C,
+                        config = { align = "c", padding = 0 },
+                        nodes = {
+                            { n = G.UIT.T, config = { text = localize('b_stocking_jumpscare'), scale = 0.45, colour = G.C.UI.TEXT_LIGHT } },
+                        }
+                    },
+                },
+            },
+
             -- Switch Areas on Trigger Toggle
             {
                 n = G.UIT.R,
@@ -165,7 +187,12 @@ function Game:main_menu(change_context)
             play_sound('button', 1, 0.3)
             SMODS.LAST_SELECTED_MOD_TAB = nil
             G.FUNCS['openModUI_stocking']()
-            G.OVERLAY_MENU:get_UIE_by_ID("overlay_menu_back_button").config.button = "exit_overlay_menu"
+            G.OVERLAY_MENU:get_UIE_by_ID("overlay_menu_back_button").config.button = "exit_overlay_menu_stocking"
+        end
+
+        G.FUNCS.exit_overlay_menu_stocking = function()
+            G.ACTIVE_MOD_UI = nil
+            G.FUNCS.exit_overlay_menu()
         end
 
         function G.SPLASH_STOCKSTUFF_LOGO:hover()
@@ -253,6 +280,7 @@ end
                 darken(G.C.RED, 0.2), G.C.GREEN
             }
             SMODS.Consumable.inject(self)
+            table.remove(G.P_CENTER_POOLS.Consumeables, #G.P_CENTER_POOLS.Consumeables)
             local dev_name = StockingStuffer.Developers[self.developer].loc and localize(StockingStuffer.Developers[self.developer].loc) or StockingStuffer.Developers[self.developer].name
             SMODS.Achievement({
                 key = 'stocking_open_'..self.developer,
@@ -373,7 +401,19 @@ end
                         func = (function(t) return t end)
                     }))
                     G.E_MANAGER:add_event(Event({
-                        trigger = 'after', delay = 1.5,
+                        trigger = 'after', delay = 0.4,
+                        func = function()
+                            local key = gift.config.center_key
+                            local vars = gift.config.center:loc_vars({}, gift)
+                            key = vars and vars.key or key
+                            attention_text({
+                                scale = 0.8, rotate = true, text = localize({type = 'name_text', key = key, set = 'stocking_present'})..localize('stocking_stuffer_received'), hold = 3, align = 'cm', offset = {x = 0,y = -1.7},major = G.play
+                            })               
+                            return true
+                        end
+                    }))
+                    G.E_MANAGER:add_event(Event({
+                        trigger = 'after', delay = 2.5,
                         func = function()
                             card.children.particles:remove()
                             card.children.particles = nil
@@ -423,6 +463,7 @@ end
                 darken(G.C.RED, 0.2), G.C.GREEN
             }
             SMODS.Consumable.inject(self)
+            table.remove(G.P_CENTER_POOLS.Consumeables, #G.P_CENTER_POOLS.Consumeables)
         end,
         pre_inject_class = function(self, func)
             for _, obj in pairs(self.obj_table) do
@@ -511,8 +552,8 @@ end
         ease_background_colour = function(self)
             ease_colour(G.C.DYN_UI.MAIN, G.C.GREEN)
             ease_background_colour { new_colour = G.C.RED, special_colour = G.C.GREEN, contrast = 2 }
-            ease_value(G.HUD.alignment.offset, 'x', -7, nil, nil, nil, 1, 'elastic')
-            ease_value(G.christmas_tree.alignment.offset, 'x', 12, nil, nil, nil, 1, 'elastic')
+            ease_value(G.HUD.alignment.offset, 'x', -7, nil, nil, nil, 1)
+            ease_value(G.christmas_tree.alignment.offset, 'x', 12, nil, nil, nil, 1)
         end,
         draw_hand = false,
         create_card = function(self, card, i)
@@ -520,6 +561,26 @@ end
         end,
         no_collection = true,
         in_pool = function() return false end
+    })
+
+    -- Booster OST (Thank you ThunderEdge!)
+    SMODS.Sound({
+        key = 'music_under_the_tree',
+        path = 'core/ChristmasSpirit.ogg',
+        volume = 0.25,
+        pitch = 1,
+        select_music_track = function(self)
+            if not G.screenwipe and G.STATE == G.STATES.SMODS_BOOSTER_OPENED and SMODS.OPENED_BOOSTER and booster_obj and booster_obj.key == 'p_stocking_present_select' then
+                return 1339
+            end
+        end,
+        sync = {
+            ['music1'] = true,
+            ['music2'] = true,
+            ['music3'] = true,
+            ['music4'] = true,
+            ['music5'] = true
+        }
     })
 
     -- Present ConsumableType init
@@ -929,8 +990,8 @@ function G.FUNCS.end_consumeable(e)
         G.E_MANAGER:add_event(Event({
             trigger = 'immediate',
             func = function()                
-                ease_value(G.HUD.alignment.offset, 'x', 7, nil, nil, nil, nil, 'elastic')
-                ease_value(G.christmas_tree.alignment.offset, 'x', -12, nil, nil, nil, nil, 'elastic')
+                ease_value(G.HUD.alignment.offset, 'x', 7, nil, nil, nil, nil)
+                ease_value(G.christmas_tree.alignment.offset, 'x', -12, nil, nil, nil, nil)
                 return true
             end
         }))

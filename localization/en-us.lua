@@ -5,13 +5,11 @@
 return {
     misc = {
         dictionary = {
-            k_stocking_present = 'Present',
-            k_stocking_wrapped_present = 'Wrapped Present',
+            -- Config Menu
             b_stocking_animate_areas = 'Card Area Animation Behavior',
             b_stocking_custom_menu = "Enable Custom Menu",
+            b_stocking_jumpscare = 'Enable Jumpscare',
             b_stocking_switch_on_trigger = "Switch Card Areas on Trigger",
-			b_stocking_present_cards = 'Presents',
-            b_stocking_wrapped_present_cards = 'Presents',
             stocking_animate_areas_desc = {
                 'Choose how area swapping',
                 'animations should behave'
@@ -20,19 +18,32 @@ return {
                 "Ease",
                 "Instant"
             },
-            stocking_stuffer_gift_tag = 'From ',
+
+            -- Objects
+            k_stocking_present = 'Present',
+            k_stocking_wrapped_present = 'Wrapped Present',
+			b_stocking_present_cards = 'Presents',
+            b_stocking_wrapped_present_cards = 'Presents',
+
+            -- UI
             stocking_stuffer_to_jokers = 'Show Jokers',
             stocking_stuffer_to_presents = 'Show Presents',
             stocking_stuffer_present_count = 'Presents: ',
-            stocking_stuffer_under_the_tree = 'Under the Tree',
+            stocking_stuffer_under_the_tree = 'Under the tree',
+            PotatoPatchUtils_first_time_disable = "Do not show again",
+            stocking_stuffer_received = ' received!',
+
+            -- Formatting
             stocking_stuffer_before = 'before',
             stocking_stuffer_after = 'after',
             stocking_stuffer_usable = 'usable',
-            PotatoPatchUtils_first_time_disable = "Do not show again",
+
+            -- Credits
+            stocking_stuffer_gift_tag = 'From ',
             stocking_stuffer_art_credit = 'Art by ',
             stocking_stuffer_code_credit = 'Code by ',
             stocking_stuffer_and_spacer = ' and ',
-            stocking_stuffer_comma_spacer = ', '
+            stocking_stuffer_comma_spacer = ', ',
         }
     },
     descriptions = {
