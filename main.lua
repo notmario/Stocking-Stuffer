@@ -563,6 +563,26 @@ end
         in_pool = function() return false end
     })
 
+    -- Booster OST (Thank you ThunderEdge!)
+    SMODS.Sound({
+        key = 'music_under_the_tree',
+        path = 'core/ChristmasSpirit.ogg',
+        volume = 0.25,
+        pitch = 1,
+        select_music_track = function(self)
+            if not G.screenwipe and G.STATE == G.STATES.SMODS_BOOSTER_OPENED and SMODS.OPENED_BOOSTER and booster_obj and booster_obj.key == 'p_stocking_present_select' then
+                return 1339
+            end
+        end,
+        sync = {
+            ['music1'] = true,
+            ['music2'] = true,
+            ['music3'] = true,
+            ['music4'] = true,
+            ['music5'] = true
+        }
+    })
+
     -- Present ConsumableType init
     SMODS.ConsumableType({
         key = 'stocking_wrapped_present',
