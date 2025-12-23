@@ -35,7 +35,8 @@ return {
                     "{C:dark_edition}Negative{} to a random consumable",
                     "{stocking}before"
                 }, {
-                    "Fills your consumable slots",
+                    "On {C:attention}first hand{} after being acquired,",
+                    "fills your consumable slots",
                     "with random consumables",
                     "{C:inactive}(Can create duplicates)",
                     "{stocking}after"
@@ -44,16 +45,16 @@ return {
             Kitty_stocking_knife = {
                 name = "Actor's Knife",
                 text = { {
-                    "Gains {X:mult,C:white}X#1#{} Mult when",
-                    "a face card is {C:red}discarded",
-                    "{C:attention}Reset{} at end of round",
-                    "{stocking}before"
+                    "Gains {X:mult,C:white}X#1#{} Mult",
+                    "for every {C:attention}face card{}",
+                    "discarded this round",
+                    "{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive})",
+                    "{stocking}after"
                 }, {
                     "If played hand contains a",
-                    "pair of face cards,",
+                    "{C:attention}Pair of face cards{},",
                     "destroy a random card",
                     "held in hand",
-                    "{stocking}after"
                 } }
             },
             Kitty_stocking_crown = {
