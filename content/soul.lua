@@ -180,15 +180,18 @@ StockingStuffer.Present({
     --         'Does nothing'
     --     }
     -- },
-    config = { extra = 4 },
+    config = { extra = { odds = 4, has_activated = false } },
     loc_vars = function(self, info_queue, card)
         table.insert(info_queue, { key = "e_negative_consumable", set = "Edition", config = { extra = 1 } })
-        return { vars = { SMODS.get_probability_vars(card, 1, card.ability.extra) } }
+        return { vars = { SMODS.get_probability_vars(card, 1, card.ability.extra.odds) } }
     end,
     pos = { x = 3, y = 0 },
     -- atlas defaults to 'stocking_display_name_presents' as created earlier but can be overriden
-
-
+    add_to_deck = function(self, card, from_debuff) -- copies count as 'activating for the first time'
+        if not from_debuff then
+            card.ability.extra.has_activated = false
+        end
+	end,
     -- use and can_use are completely optional, delete if you do not need your present to be usable
 
     -- calculate is completely optional, delete if your present does not need it
@@ -204,19 +207,21 @@ StockingStuffer.Present({
                     table.insert(pool, c)
                 end
             end
-            if next(pool) and SMODS.pseudorandom_probability(card, self.key, 1, card.ability.extra) then
-                pseudorandom_element(pool, pseudoseed(self.key)):set_edition("e_negative")
+            if next(pool) and SMODS.pseudorandom_probability(card, self.key, 1, card.ability.extra.odds) then
+                pseudorandom_element(pool, pseudoseed(self.key)):set_edition("e_negative", nil, nil, true)
             end
-        elseif StockingStuffer.second_calculation and context.after then
+        elseif StockingStuffer.second_calculation and context.after and (not card.ability.extra.has_activated) then
             ---@type integer
-            local space = G.consumeables.config.card_limit - (#G.consumeables.cards + G.GAME.consumeable_buffer)
-            G.GAME.consumeable_buffer = G.consumeables.config.card_limit - #G.consumeables.cards
             return {
                 func = function()
                     G.E_MANAGER:add_event(Event { func = function()
+                        local space = G.consumeables.config.card_limit - (#G.consumeables.cards + G.GAME.consumeable_buffer)
+                        G.GAME.consumeable_buffer = G.consumeables.config.card_limit - #G.consumeables.cards
                         for _ = 1, space do
                             SMODS.add_card { set = "Consumeables", area = G.consumeables, allow_duplicates = true }
+                            card.ability.extra.has_activated = true
                         end
+                        G.GAME.consumeable_buffer = G.GAME.consumeable_buffer - space
                         return true
                     end })
                 end
@@ -266,6 +271,8 @@ StockingStuffer.Present({
                     break
                 end
             end
+        elseif context.joker_main and StockingStuffer.second_calculation then
+            return { xmult = card.ability.extra.xmult }
         elseif context.end_of_round and StockingStuffer.second_calculation and context.cardarea == G.stocking_present then
             card.ability.extra.xmult = 1
             return { message = localize("k_reset") }
