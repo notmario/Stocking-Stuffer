@@ -35,9 +35,14 @@ StockingStuffer.Present({
     pixel_size = {w = 42, h = 51},
 
     loc_vars = function(self, info_queue, card)
+        local num = 0
+        for i,v in ipairs((G.stocking_present or {cards = {}}).cards) do
+            if v == card then num = i end
+        end
+
         return {
             vars = {
-                card.ability.mult,
+                num > 0 and (math.floor(math.abs(#(G.stocking_present or {cards = {}}).cards/4 - num/2) * #(G.stocking_present or {cards = {}}).cards * 2) / 2) or 0,
                 colours = {HEX("22A617")} -- present color
             }
         }
@@ -94,7 +99,7 @@ StockingStuffer.Present({
             local centered = false
             for i,v in ipairs(G.stocking_present.cards) do
                 if v == card then
-                    if math.abs(#G.stocking_present.cards/2 - i) < 1 then
+                    if math.abs(#G.stocking_present.cards/2 - i) < 1 and i ~= #G.stocking_present.cards/2 then
                         centered = true
                         break
                     end
@@ -124,11 +129,12 @@ StockingStuffer.Present({
     pixel_size = {w = 69, h = 77},
 
     loc_vars = function(self, info_queue, card)
+        local num, den = SMODS.get_probability_vars(card, 1, card.ability.extra.chance, 'Breuhh_stocking_garland')
         return {
             vars = {
                 card.ability.extra.chipsmul,
                 card.ability.extra.chipsmul * card.ability.extra.count,
-                card.ability.extra.chance,
+                num, den,
                 colours = {HEX("22A617")}
             }
         }
@@ -246,10 +252,17 @@ StockingStuffer.Present({
     pixel_size = {x = 70, y = 68}, 
 
     loc_vars = function(self, info_queue, card)
+        local idx = 0
+        for i,v in ipairs((G.stocking_present or {cards = {}}).cards) do
+            if v == card then idx = i break end
+        end
+
         return {
             vars = {
                 card.ability.valmul,
                 card.ability.valmul * 5,
+                (#(G.stocking_present or {cards = {}}).cards - idx) * card.ability.valmul,
+                idx > 0 and ((idx - 1) * card.ability.valmul * 5) or 0,
                 colours = {HEX("22A617")}
             }
         }
