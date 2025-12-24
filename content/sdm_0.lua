@@ -9,7 +9,7 @@ SMODS.Atlas({
 
 StockingStuffer.Developer({
     name = display_name,
-    colour = G.C.RED
+    colour = G.C.FILTER
 })
 
 StockingStuffer.WrappedPresent({
