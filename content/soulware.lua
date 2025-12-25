@@ -150,7 +150,7 @@ StockingStuffer.Present({
         local the_big_one = to_big(1)
             if SMODS.pseudorandom_probability(card, 'stocking_locked_door', card.ability.extra.numerator, card.ability.extra.denominator) then
                 card.ability.extra.numerator = the_big_one
-                if to_big(card.ability.extra.denominator) >= the_big_one then
+                if to_big(card.ability.extra.denominator) <= the_big_one then
                     card.ability.extra.denominator = the_big_one
                 else
                     card.ability.extra.denominator = to_big(card.ability.extra.denominator)-the_big_one
