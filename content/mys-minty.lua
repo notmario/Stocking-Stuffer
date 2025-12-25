@@ -1,3 +1,18 @@
+--[[
+VERY IMPORTANT NOTE TO MINTY:
+
+I wanted to make these presents gradually reveal their effects,
+but due to time constraints I was unable to do so. Hence,
+for clarity's sake, I decided to try and preserve the style
+of your presents' descriptions while actually describing
+their effects so that the player has more fun interacting
+with your presents - I am a strong believer that the
+gameplay of something should take precedence over its
+contextual flavor.
+
+- ThunderEdge
+]]
+
 -- talisman functions
 to_big = to_big or function(x)
   return x
@@ -56,9 +71,14 @@ StockingStuffer.Present({ --cute little jingle ball
         if card.ability.extra.antes_held >= 2 then
             key = key.."_clearer"
         end
-        local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'mintymas_yarn_chase_target')
+        local num, denom = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, "mintymas_yarn_chase_target")
         return {
-            key = key, vars = { numerator, denominator }
+            key = key,
+            vars = {
+                card.ability.extra.hands,
+                num,
+                denom
+            }
         }
     end,
 
@@ -473,9 +493,15 @@ StockingStuffer.Present({ --pitfall seed (joke on my choice of placeholder sprit
         if card.ability.extra.antes_held >= 2 then
             key = key.."_clearer"
         end
-        local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'mintymas_yarn_chase_target')
+        local num, denom = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, "pitfall")
         return {
-            key = key, vars = { numerator, denominator }
+            key = key,
+            vars = {
+                card.ability.extra.mindmg,
+                card.ability.extra.maxdmg,
+                num,
+                denom
+            }
         }
     end,
     config = {

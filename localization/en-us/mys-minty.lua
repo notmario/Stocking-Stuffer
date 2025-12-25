@@ -272,7 +272,11 @@ return {
                         "Whoa! You can chase it!"
                     },
                     {
-                        "Makes you {C:chips}energetic{} sometimes"
+                        "Sometimes makes you {C:blue}energetic{}",
+                        "when selecting a {C:attention}Blind,",
+                        "giving you {C:blue}+#1#{} hands",
+                        "this round",
+                        "{C:inactive}({C:green}#2# in #3#{C:inactive} chance)",
                     }
                 }
             },
@@ -281,7 +285,10 @@ return {
                 text = {
                     "Whoa! You can chase it!",
                     " ",
-                    "Makes you {C:chips}energetic{} sometimes"
+                    "Sometimes makes you {C:blue}energetic{}",
+                    "when selecting a {C:attention}Blind,",
+                    "giving you {C:blue}+1{} hands",
+                    "this round",
                 }
             },
             ["mys. minty_stocking_wipthing"] = {
@@ -307,7 +314,9 @@ return {
                         "Whoa! This is entirely unrecognizable!",
                     },
                     {
-                        "You still have no clue what this is for!"
+                        "You still have no clue what this is for!",
+                        "{C:inactive}When a hand is played, {C:green}1 in 4{C:inactive} chance",
+                        "{C:inactive}for this to become usable..."
                     },
                 }
             },
@@ -316,7 +325,9 @@ return {
                 text = {
                     "Whoa! This is entirely unrecognizable!",
                     " ",
-                    "You still have no clue what this is for!"
+                    "You still have no clue what this is for!",
+                    "{C:inactive}When a hand is played, {C:green}1 in 4{C:inactive} chance",
+                    "{C:inactive}for this to become usable..."
                 }
             },
             ["mys. minty_stocking_thewand_trade"] = {
@@ -326,16 +337,18 @@ return {
                         "Whoa! This is entirely unrecognizable!",
                     },
                     {
-                        "Trade it for some other present!"
+                        "Trade it for some other present!",
+                        "{stocking}usable{}"
                     },
                 }
             },
             ["mys. minty_stocking_thewand_trade_nomultibox"] = {
                 name = 'Mysterious Thing',
                 text = {
-                    "Whoa! This is entirely unrecognizable!",
-                    "",
-                    "Trade it for some other present!"
+                    "Whoa! This is entirely unrecognizeable!",
+                    " ",
+                    "Trade it for some other present!",
+                    "{stocking}usable{}"
                 }
             },
             ["mys. minty_stocking_thewand_dismantle"] = {
@@ -345,7 +358,8 @@ return {
                         "Whoa! This is entirely unrecognizable!",
                     },
                     {
-                        "Tear it to pieces and play with the pieces!"
+                        "Tear it to pieces and play with the pieces!",
+                        "{stocking}usable{}"
                     },
                 }
             },
@@ -354,7 +368,8 @@ return {
                 text = {
                     "Whoa! This is entirely unrecognizable!",
                     " ",
-                    "Tear it to pieces and play with the pieces!"
+                    "Tear it to pieces and play with the pieces!",
+                    "{stocking}usable{}"
                 }
             },
             ["mys. minty_stocking_wandpiece_string"] = {
@@ -364,12 +379,12 @@ return {
                         "Wheeeeeeee!",
                     },
                     {
-                        "{C:mult}+#1#{} Mult {stocking}before{}",
-                        "all other scoring"
+                        "{C:mult}+#1#{} Mult",
+                        "{stocking}before{}",
                     },
                     {
-                        "{C:white,X:mult}X#2#{} Mult {stocking}after{}",
-                        "all other scoring"
+                        "{C:white,X:mult}X#2#{} Mult",
+                        "{stocking}after{}",
                     },
                 }
             },
@@ -378,11 +393,11 @@ return {
                 text = {
                     "Wheeeeeeee!",
                     " ",
-                    "{C:mult}+#1#{} Mult {stocking}before{}",
-                    "all other scoring",
+                    "{C:mult}+#1#{} Mult",
+                    "{stocking}before{}",
                     " ",
-                    "{C:white,X:mult}X#2#{} Mult {stocking}after{}",
-                    "all other scoring"
+                    "{C:white,X:mult}X#2#{} Mult",
+                    "{stocking}after{}",
                 }
             },
             ["mys. minty_stocking_wandpiece_feather"] = {
@@ -439,7 +454,9 @@ return {
                         "{C:inactive,s:0.8}That is mint, right?{}"
                     },
                     {
-                        "Use it once per round to {C:mult}get distracted{}",
+                        "Use it once per round to",
+                        "{C:red}get distracted{} and {C:red}discard",
+                        "your entire hand",
                         "{stocking}usable{}"
                     }
                 }
@@ -451,7 +468,9 @@ return {
                     "so intoxicating, too...",
                     "{C:inactive,s:0.8}That is mint, right?{}",
                     " ",
-                    "Use it once per round to {C:mult}get distracted{}",
+                    "Use it once per round to",
+                    "{C:red}get distracted{} and {C:red}discard",
+                    "your entire hand",
                     "{stocking}usable{}"
                 }
             },
@@ -464,7 +483,9 @@ return {
                         "{C:inactive,s:0.8}That is mint, right?{}"
                     },
                     {
-                        "Use it once per round to {C:mult}get distracted{}",
+                        "Use it once per round to",
+                        "{C:red}get distracted{} and {C:red}discard",
+                        "your entire hand",
                     }
                 }
             },
@@ -475,7 +496,9 @@ return {
                     "so intoxicating, too...",
                     "{C:inactive,s:0.8}That is mint, right?{}",
                     " ",
-                    "Use it once per round to {C:mult}get distracted{}",
+                    "Use it once per round to",
+                    "{C:red}get distracted{} and {C:red}discard",
+                    "your entire hand",
                 }
             },
             ["mys. minty_stocking_treat"] = {
@@ -486,8 +509,9 @@ return {
                         "HELLS YEAHHHHH NOMNOMNOM"
                     },
                     {
-                        "{s:0.8}Use it to nomnomnom",
-                        "{s:0.8}and {s:0.8,C:chips}gain some energy{s:0.8}"
+                        "Use it to nomnomnom,",
+                        "{C:blue}regain some energy{}, and",
+                        "gain {C:blue}+1{} hand this round",
                     }
                 }
             },
@@ -498,8 +522,9 @@ return {
                         "A DELICIOUS FISHY TREAT",
                         "HELLS YEAHHHHH NOMNOMNOM",
                         " ",
-                        "{s:0.8}Use it to nomnomnom",
-                        "{s:0.8}and {s:0.8,C:chips}gain some energy{s:0.8}"
+                        "Use it to nomnomnom,",
+                        "{C:blue}regain some energy{}, and",
+                        "gain {C:blue}+1{} hand this round",
                     }
                 }
             },
@@ -511,7 +536,10 @@ return {
                         "Oh! No, it's the real thing!",
                     },
                     {
-                        "Makes the blind {C:mult}fall down{} sometimes"
+                        "When {C:attention}Blind{} is selected,",
+                        "sometimes makes the {C:attention}Blind{} {C:red}fall down{}",
+                        "and reduces its size by {C:attention}#1#-#2#%{}",
+                        "{C:inactive}({C:green}#3# in #4#{C:inactive} chance)",
                     }
                 }
             },
@@ -521,7 +549,10 @@ return {
                     "Isn't this a placeholder sprite?",
                     "Oh! No, it's the real thing!",
                     " ",
-                    "Makes the blind {C:mult}fall down{} sometimes"
+                    "When {C:attention}Blind{} is selected,",
+                    "sometimes makes the {C:attention}Blind{} {C:red}fall down{}",
+                    "and reduces its requirement by {C:attention}#1#-#2#%{}",
+                    "{C:inactive}({C:green}#3# in #4#{C:inactive} chance)",
                 }
             },
         },
