@@ -183,7 +183,6 @@ StockingStuffer.Present({
                 aces[#aces+1] = card;
             end
         end
-
         SMODS.destroy_cards(pseudorandom_element(aces));
         G.E_MANAGER:add_event(Event({
             trigger = 'after',
@@ -227,7 +226,14 @@ StockingStuffer.Present({
     end,
 
     can_use = function(self, card)
-        return card.ability.extra.state == 1;
+        local has_ace = false
+        for _, c in ipairs(G.playing_cards) do
+            if c:get_id() == 14 then
+                has_ace = true
+                break
+            end
+        end
+        return card.ability.extra.state == 1 and has_ace;
     end,
 })
 
