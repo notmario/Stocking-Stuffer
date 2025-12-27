@@ -617,14 +617,9 @@ StockingStuffer.Present({
     end,
     use = function(self, card, area, copier) 
         -- do stuff here
-        if G.GAME.blind:get_type() == "Boss" then
-            if pseudorandom("shoutouts to gift sets", 0, 1) > 0 then
-                G.GAME.blind:disable()
-            else
-                G.GAME.blind.chips = G.GAME.blind.chips / 2
-                local ch = G.GAME.blind.chips
-				G.GAME.blind.chip_text = number_format(ch)
-            end
+        if G.GAME.blind:get_type() == "Boss" and not G.GAME.blind.disabled then
+            G.GAME.blind:disable()
+            card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('ph_boss_disabled')})
         else
             G.GAME.blind.chips = G.GAME.blind.chips / 2
             G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
